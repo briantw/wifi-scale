@@ -1,0 +1,53 @@
+<html><body><pre>
+<span style="color: #E2661A;">BufferedReader</span> reader;
+<span style="color: #E2661A;">String</span> line;
+<span style="color: #E2661A;">String</span>[] samples;
+
+<span style="color: #E2661A;">int</span> x_max = 1880, y_max = 960;
+<span style="color: #E2661A;">int</span> x = 256, y = 160, w = 0;
+&nbsp;&nbsp;<span style="color: #E2661A;">int</span> oldx[] = <span style="color: #33997E;">new</span> <span style="color: #E2661A;">int</span>[16];
+&nbsp;&nbsp;<span style="color: #E2661A;">int</span> oldy[] = <span style="color: #33997E;">new</span> <span style="color: #E2661A;">int</span>[16];
+&nbsp;&nbsp;
+<span style="color: #33997E;">void</span> <span style="color: #006699;"><b>setup</b></span>() {
+&nbsp;&nbsp;reader&nbsp;=&nbsp;<span style="color: #006699;">createReader</span>(<span style="color: #7D4793;">&quot;P1.csv&quot;</span>);  
+&nbsp;&nbsp;<span style="color: #006699;">size</span>(x_max, y_max); <span style="color: #666666;">// window size</span>
+&nbsp;&nbsp;<span style="color: #006699;">background</span>(0);
+&nbsp;&nbsp;<span style="color: #006699;">stroke</span>(255);
+}
+
+<span style="color: #33997E;">void</span> <span style="color: #006699;"><b>draw</b></span>() {
+
+&nbsp;&nbsp;<span style="color: #669900;">try</span> {
+&nbsp;&nbsp;&nbsp;&nbsp;line&nbsp;=&nbsp;reader.<span style="color: #006699;">readLine</span>();
+&nbsp;&nbsp;}&nbsp;<span style="color: #669900;">catch</span> (IOException e) {
+&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();
+&nbsp;&nbsp;&nbsp;&nbsp;line&nbsp;=&nbsp;<span style="color: #33997E;">null</span>;
+&nbsp;&nbsp;}
+&nbsp;&nbsp;<span style="color: #669900;">if</span> (line == <span style="color: #33997E;">null</span>) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #666666;">// Stop reading because of an error or file is empty</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">noLoop</span>();  
+&nbsp;&nbsp;}&nbsp;<span style="color: #669900;">else</span> {
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #E2661A;">String</span>[] samples = <span style="color: #006699;">split</span>(line, <span style="color: #7D4793;">&apos;;&apos;</span>);
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #669900;">for</span> (<span style="color: #E2661A;">int</span> i = 0; i &lt; 16; i++) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #666666;">// get y value</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #666666;">// divide by 3</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #666666;">// draw at 960 - (60 * i)</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #666666;">// println(samples[1]);</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;=&nbsp;<span style="color: #006699;">parseInt</span>(samples[i]);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y&nbsp;=&nbsp;(100&nbsp;&lt;&nbsp;y)?32:0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #006699;">line</span>( oldx[i], (60 * i) - oldy[i] + 32,  x, (60 * i) - y + 32);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oldx[i]&nbsp;=&nbsp;x;&nbsp;oldy[i]&nbsp;=&nbsp;y;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;w++;&nbsp;w&nbsp;&amp;=&nbsp;15;&nbsp;<span style="color: #669900;">if</span> (0 == w) x++;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;}&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+}
+
+</pre></body></html>
